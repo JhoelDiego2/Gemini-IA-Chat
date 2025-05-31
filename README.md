@@ -79,6 +79,7 @@ npm start
 - Matheus Matos (@MatheusFerreiraMatos)
 - Alexander Gonçalves (@gfalexander)
 - Marise Miranda (@miranda500)
+- Jhoel Mita (@_jhoeldiego)
 
 ## Fontes bibliográficas
 
