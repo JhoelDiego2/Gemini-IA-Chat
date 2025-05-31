@@ -3,7 +3,7 @@ require('dotenv').config();
 
 // Configuração correta com a chave de API
 const genAI = new GoogleGenAI({
-  apiKey: process.env.MINHA_CHAVE || 'AIzaSyAS4U69hBZ33cW-hmpCobinB3NmtjFMeYc'
+  apiKey: process.env.MINHA_CHAVE 
 });
 
 var conversa = [];

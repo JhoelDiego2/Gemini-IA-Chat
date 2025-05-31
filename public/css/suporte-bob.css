@@ -196,9 +196,10 @@ input {
     background-size: 40%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     border-radius: 10px;
     overflow: hidden;
+    
 }
 
 .feed-container {
@@ -209,6 +210,7 @@ input {
     padding: 3vh 2vw;
     background: linear-gradient(to bottom, black 1%, rgba(0, 0, 0, 0.788) 10%, rgba(0, 0, 0, 0.699));
     border-radius: 10px;
+    min-height: 53.9vh;
 }
 
 .div-form {

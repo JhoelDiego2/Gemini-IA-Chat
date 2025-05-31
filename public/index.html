@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT - Bob IA</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="css/suporte-bob.css">
+</head>
+
+<body id="body">
+    <div class="side-bar">
+        <div class="nav">
+            <img src="assets/logotipo01.png" alt="" style="width: 200px;">
+            <p>Olá Usuario seja bem vindo(a)</p>
+            <div class="nav-list">
+                <div>
+                    <a href="index.html"><img src="assets/house.png" alt="icone">Inicio</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="main">
+        <div class="header">
+            <div class="topo">
+                <div class="column-1">
+                    <p id="title">Chat Gemini ia <span id="nome_empresa"></span></p>
+                </div>
+                <div class="column-2">
+                    <div>
+                        <img src="assets/person-circle.png" alt="picture" style="padding-right: 10px;">
+                        <p> Usuario </p>
+                    </div>
+                </div>
+            </div>
+            <div class="sub">
+
+                <div class="column-1">
+                    <p>Olá seja bem vindo(a) ao nosso asistente virtual Bob IA </p>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="container">
+            <div class="column-1">
+                <img src="assets/robot.png" alt="BobIA" width="300px">
+                <p><i>Desenvolvido por:Jhoel Diego Mamani Mita</i></p>
+            </div>
+            <div class="column-2">
+                <section id="forum" style="display: n">
+                    <div class="div-results">
+                        <div id="feed_container" class="feed-container">
+
+                        </div>
+                    </div>
+                    <div class="div-form">
+                        <form id="form_postagem">
+                            <label>
+                                <p>
+                                    Mensagem (máximo de 250 caracteres):
+                                </p>
+                                <textarea name="descricao" id="textarea_descricao" maxlength="250" rows="5"></textarea>
+                                <button onclick="gerarResposta()">Enviar</button>
+                            </label>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+    </div>
+</body>
+
+</html>
+<script>
+    // Armazena as mensagens de forma persistente
+    let conversa = JSON.parse(sessionStorage.getItem('conversa_lofhel')) || [];
+
+    async function gerarResposta(event) {
+        event.preventDefault(); // Impede o comportamento padrão do formulário
+
+        const textarea = document.getElementById('textarea_descricao');
+        const pergunta = textarea.value.trim();
+
+        if (!pergunta) {
+            alert("Digite uma pergunta!");
+            return;
+        }
+
+        // Adiciona mensagem do usuário
+        conversa.push({
+            sender: 'user',
+            text: pergunta,
+            time: new Date()
+        });
+
+        // Atualiza o sessionStorage
+        sessionStorage.setItem('conversa_lofhel', JSON.stringify(conversa));
+
+        exibirConversa();
+        textarea.value = ''; // Limpa o campo
+
+        try {
+            const response = await fetch('/bobia/publicar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pergunta })
+            });
+
+            const data = await response.json();
+
+            // Adiciona resposta da IA
+            conversa.push({
+                sender: 'ia',
+                text: data.resultado,
+                time: new Date()
+            });
+
+            sessionStorage.setItem('conversa_lofhel', JSON.stringify(conversa));
+
+        } catch (error) {
+            console.error("Erro:", error);
+            conversa.push({
+                sender: 'ia',
+                text: "Erro ao se comunicar com o servidor",
+                time: new Date()
+            });
+            sessionStorage.setItem('conversa_lofhel', JSON.stringify(conversa));
+        } finally {
+            exibirConversa();
+        }
+    }
+
+    function exibirConversa() {
+        const feedContainer = document.getElementById('feed_container');
+        if (!feedContainer) return;
+
+        const nome = sessionStorage.NOME_USUARIO || "Usuário";
+        let html = '';
+
+        conversa.forEach(message => {
+            if (!message.sender || !message.text) return;
+
+            const isUser = message.sender === 'user';
+            html += `
+        <div class="div_feed ${isUser ? 'div_feed_usuario' : ''}">
+            <img src="${isUser ? 'assets/person-circle.png' : 'assets/bob_logo.png'}" 
+                 alt="" class="avatar_mensagem">
+            <div class="div_mensagem">
+                <p class="nome_mensagem">${isUser ? nome : 'Bob IA'}</p>
+                <p class="mensagem_counteudo">${message.text}</p>
+                <p class="data_mensagem">
+                    ${message.time.toLocaleDateString("pt-BR")} - 
+                    ${message.time.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
+                </p>
+            </div>
+        </div>`;
+        });
+
+        feedContainer.innerHTML = html;
+        feedContainer.scrollTop = feedContainer.scrollHeight;
+    }
+
+    // Carrega a conversa ao iniciar
+    document.addEventListener('DOMContentLoaded', () => {
+        exibirConversa();
+
+        // Configura o evento do formulário corretamente
+        const form = document.querySelector('form'); // Ou o seletor do seu botão
+        if (form) {
+            form.addEventListener('submit', gerarResposta);
+        }
+    });
+</script>
