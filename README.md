@@ -1,11 +1,35 @@
-# BobIA
 
-_Este é um projeto educativo desenvolvido para auxiliar os alunos na disciplina de Arquitetura Computacional. Ele consiste em uma API e uma interface web que utilizam o serviço de inteligência artificial Google Generative AI (Gemini) para responder perguntas relacionadas ao tema da disciplina._
+# 🤖 BobIA
 
-## Instalação e Configuração
+Projeto educativo desenvolvido para auxiliar alunos na disciplina de **Arquitetura Computacional**.  
 
-### Clonar o repositório:
+Esta aplicação consiste em uma **API + Interface Web** que utiliza o serviço de inteligência artificial **Google Generative AI (Gemini)** para responder perguntas sobre temas da disciplina.
 
+---
+## 🕹️ Demonstração
+
+
+<div align="center"> <img src="https://i.imgur.com/BAsmbdZ.png" width="700"/> </div>
+<div align="center" >
+<img src="https://i.imgur.com/aUefg3Q.png"  width="230">
+<img src="https://i.imgur.com/Su9HrIC.png" width="230">
+<img src="https://i.imgur.com/pc8htuf.png"  width="230">
+</div>
+
+- 🎨 **Site estatico:**  
+[🔗 Acessar Site]( https://gemini-ia-chat.vercel.app/)
+
+## 🚀 Tecnologias Utilizadas
+
+- Node.js
+- Express
+- Google Generative AI (Gemini)
+- DotEnv
+
+
+## 📦 Instalação e Configuração
+
+### 🔗 Clone o repositório:
 ```bash
 git clone https://github.com/BandTec/BobIA.git
 ```
